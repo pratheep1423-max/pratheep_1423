@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FAF9F6;
+    color: #0D0E12;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html.dark body {
+    background-color: #0F1115;
+    color: #FAF9F6;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+/* Subtle Film Grain Overlay */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF9F6;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #0F1115;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4B87E;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
+
+/* Custom utility for glass effect */
+.glass-panel {
+  background: rgba(250, 249, 246, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 229, 220, 0.6);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+html.dark .glass-panel {
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(39, 43, 52, 0.6);
+}
+
+.glass-panel-dark {
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(39, 43, 52, 0.6);
+}
+
+/* Automatic Theme Overrides for Cards, Inputs, and Text when Dark Mode is Active */
+html.dark .bg-white {
+  background-color: #181B20 !important;
+}
+
+html.dark .bg-studio-bg {
+  background-color: #0F1115 !important;
+}
+
+html.dark .bg-studio-card {
+  background-color: #181B20 !important;
+}
+
+html.dark .text-obsidian-900 {
+  color: #FAF9F6 !important;
+}
+
+html.dark .text-obsidian-800 {
+  color: #E2DDD1 !important;
+}
+
+html.dark .text-obsidian-800\/80 {
+  color: rgba(226, 221, 209, 0.8) !important;
+}
+
+html.dark .text-obsidian-800\/70 {
+  color: rgba(226, 221, 209, 0.7) !important;
+}
+
+html.dark .text-obsidian-800\/60 {
+  color: rgba(226, 221, 209, 0.6) !important;
+}
+
+html.dark .border-ivory-300 {
+  border-color: #272B34 !important;
+}
+
+html.dark .border-ivory-200 {
+  border-color: #1F232B !important;
+}
+
+html.dark .border-ivory-300\/60 {
+  border-color: rgba(39, 43, 52, 0.6) !important;
+}
+
+html.dark .bg-ivory-50 {
+  background-color: #14171D !important;
+}
+
+html.dark .bg-ivory-100 {
+  background-color: #1A1D24 !important;
+}
+
+html.dark .bg-ivory-200 {
+  background-color: #20242D !important;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #181B20;
+  color: #FAF9F6;
+  border-color: #272B34;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #8A909D;
+}
+
+/* Smooth drag cursor */
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-grabbing {
+  cursor: grabbing;
+}
