@@ -11,10 +11,10 @@ export const BookingManager = () => {
 
   const filtered = bookings.filter((bk) => {
     const matchesSearch =
-      bk.customerName.toLowerCase().includes(search.toLowerCase()) ||
-      bk.refNumber.toLowerCase().includes(search.toLowerCase()) ||
-      bk.email.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus = statusFilter === 'ALL' || bk.status.toUpperCase() === statusFilter;
+      (bk.customerName || '').toLowerCase().includes(search.toLowerCase()) ||
+      (bk.refNumber || '').toLowerCase().includes(search.toLowerCase()) ||
+      (bk.email || '').toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = statusFilter === 'ALL' || (bk.status || '').toUpperCase() === statusFilter;
     return matchesSearch && matchesStatus;
   });
 

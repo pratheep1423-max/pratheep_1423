@@ -7,9 +7,9 @@ export const CustomerManager = () => {
   const [search, setSearch] = useState('');
 
   const filtered = customers.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.email.toLowerCase().includes(search.toLowerCase()) ||
-    c.phone.toLowerCase().includes(search.toLowerCase())
+    (c.name || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.email || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.phone || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (

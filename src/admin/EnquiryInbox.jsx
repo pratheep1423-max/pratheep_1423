@@ -38,7 +38,7 @@ export const EnquiryInbox = () => {
 
               <div className="flex items-center gap-3">
                 <span className="text-[10px] font-mono text-obsidian-800/50">
-                  {new Date(enq.date).toLocaleDateString()}
+                  {new Date(enq.createdAt || enq.date).toLocaleDateString()}
                 </span>
 
                 <select

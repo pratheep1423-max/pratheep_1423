@@ -35,7 +35,7 @@ export const AdminLogin = () => {
 
   const handleAutoFillDemo = () => {
     setUsername('admin@2mpictures.com');
-    setPassword('admin123');
+    setPassword('pratheep@217');
     setError('');
   };
 

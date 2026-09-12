@@ -163,6 +163,9 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({ success: false, error: 'Invalid JSON payload' }));
       }
     });
+    return;
+  }
+
   // POST /api/admin/login
   if (req.method === 'POST' && url.pathname === '/api/admin/login') {
     let body = '';
@@ -204,3 +207,4 @@ server.listen(PORT, () => {
   console.log(`🚀 2M Pictures Backend API Server running on http://localhost:${PORT}`);
   console.log(`📱 WhatsApp target notifications set to: +${ADMIN_WHATSAPP_NUMBER}`);
 });
+
