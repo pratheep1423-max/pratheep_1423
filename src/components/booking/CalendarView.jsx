@@ -11,9 +11,47 @@ export const TIME_SLOTS = [
   '07:00 PM (Sunset / Evening)'
 ];
 
+// Convert 24-hour time to 12-hour format with AM/PM
+const format24To12 = (time24) => {
+  if (!time24) return '04:30 PM';
+  const [hStr, mStr] = time24.split(':');
+  let h = parseInt(hStr, 10);
+  const m = mStr || '00';
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${String(h).padStart(2, '0')}:${m} ${ampm}`;
+};
+
+// Convert 12-hour format string to 24-hour HH:mm for <input type="time">
+const format12To24 = (time12) => {
+  if (!time12) return '16:30';
+  const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!match) return '16:30';
+  let [_, hStr, mStr, ampm] = match;
+  let h = parseInt(hStr, 10);
+  if (ampm.toUpperCase() === 'PM' && h < 12) h += 12;
+  if (ampm.toUpperCase() === 'AM' && h === 12) h = 0;
+  return `${String(h).padStart(2, '0')}:${mStr}`;
+};
+
 export const CalendarView = ({ selectedDate, onSelectDate, selectedTime, onSelectTime, isAdmin = false }) => {
   const { blockedDates, bookings, toggleBlockDate } = useApp();
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 9, 1)); // October 2026
+  const [customTimeVal, setCustomTimeVal] = useState(() => format12To24(selectedTime));
+
+  const isPresetSelected = TIME_SLOTS.includes(selectedTime);
+  const isCustomSelected = selectedTime && !isPresetSelected;
+
+  const handleCustomTimeChange = (new24) => {
+    setCustomTimeVal(new24);
+    const formatted = format24To12(new24);
+    onSelectTime(`${formatted} (Custom)`);
+  };
+
+  const handleQuickTime = (t) => {
+    setCustomTimeVal(format12To24(t));
+    onSelectTime(`${t} (Custom)`);
+  };
 
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfWeek = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
@@ -139,9 +177,8 @@ export const CalendarView = ({ selectedDate, onSelectDate, selectedTime, onSelec
                 }
               }}
               disabled={!isAdmin && (status === 'BLOCKED' || status === 'BOOKED')}
-              className={`relative h-12 md:h-14 p-2 rounded-lg border text-sm font-semibold flex flex-col items-center justify-between transition-all ${statusBg} ${
-                !isAdmin && (status === 'BLOCKED' || status === 'BOOKED') ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
-              }`}
+              className={`relative h-12 md:h-14 p-2 rounded-lg border text-sm font-semibold flex flex-col items-center justify-between transition-all ${statusBg} ${!isAdmin && (status === 'BLOCKED' || status === 'BOOKED') ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
+                }`}
             >
               <span className="self-start text-xs font-mono">{dayNum}</span>
               <div className="flex items-center gap-1">
@@ -160,32 +197,118 @@ export const CalendarView = ({ selectedDate, onSelectDate, selectedTime, onSelec
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 pt-6 border-t border-ivory-200"
+          className="mt-8 pt-6 border-t border-ivory-200 space-y-5"
         >
-          <div className="flex items-center gap-2 text-sm font-semibold text-obsidian-900 mb-4">
-            <Clock className="w-4 h-4 text-champagne-600" />
-            <span>Select Time Slot for {selectedDate}:</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-sm font-semibold text-obsidian-900">
+              <Clock className="w-4 h-4 text-champagne-600" />
+              <span>Select Time Slot for {selectedDate}:</span>
+            </div>
+            {selectedTime && (
+              <span className="text-xs font-mono px-3 py-1 bg-champagne-500/20 text-obsidian-900 font-bold rounded-full border border-champagne-500/40 flex items-center gap-1.5 w-fit">
+                <CheckCircle2 className="w-3.5 h-3.5 text-champagne-600" />
+                <span>Selected: {selectedTime}</span>
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {TIME_SLOTS.map((slot) => {
-              const isTimeSelected = selectedTime === slot;
-              return (
-                <button
-                  type="button"
-                  key={slot}
-                  onClick={() => onSelectTime(slot)}
-                  className={`p-3 rounded-lg border text-xs font-mono tracking-wider flex items-center justify-between transition-all ${
-                    isTimeSelected
-                      ? 'bg-champagne-500 text-obsidian-950 font-bold border-champagne-600 shadow-sm'
-                      : 'bg-ivory-50 text-obsidian-900 border-ivory-300 hover:border-obsidian-800'
-                  }`}
-                >
-                  <span>{slot}</span>
-                  {isTimeSelected && <CheckCircle2 className="w-4 h-4" />}
-                </button>
-              );
-            })}
+          {/* Standard Recommended Slots */}
+          <div>
+            <span className="text-[11px] font-mono text-obsidian-800/70 uppercase tracking-wider block mb-2 font-semibold">
+              Standard Recommended Slots (பரிந்துரைக்கப்பட்ட நேரங்கள்):
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {TIME_SLOTS.map((slot) => {
+                const isTimeSelected = selectedTime === slot;
+                return (
+                  <button
+                    type="button"
+                    key={slot}
+                    onClick={() => onSelectTime(slot)}
+                    className={`p-3 rounded-lg border text-xs font-mono tracking-wider flex items-center justify-between transition-all ${
+                      isTimeSelected
+                        ? 'bg-champagne-500 text-obsidian-950 font-bold border-champagne-600 shadow-sm'
+                        : 'bg-ivory-50 text-obsidian-900 border-ivory-300 hover:border-obsidian-800'
+                    }`}
+                  >
+                    <span>{slot}</span>
+                    {isTimeSelected && <CheckCircle2 className="w-4 h-4" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Customer Custom Time Selection */}
+          <div className={`p-4 sm:p-5 rounded-xl border transition-all ${
+            isCustomSelected
+              ? 'bg-champagne-50/70 border-champagne-500 shadow-sm ring-1 ring-champagne-500/50'
+              : 'bg-ivory-50 border-ivory-300'
+          } space-y-3`}>
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-champagne-600" />
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-obsidian-900">
+                  Customer Custom Time (வாடிக்கையாளர் விருப்ப நேரம்)
+                </span>
+              </div>
+              {isCustomSelected && (
+                <span className="text-[10px] font-mono uppercase bg-champagne-500 text-obsidian-950 px-2.5 py-0.5 rounded font-bold">
+                  Custom Time Active
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs text-obsidian-800/70 font-sans">
+              மேலே உள்ள நேரங்கள் அல்லாமல் வேறு நேரம் (எ.கா. Early morning photoshoot, muhurtham, specific evening timing) தேவைப்பட்டால், கீழே உள்ள clock-ல் உங்கள் சரியான நேரத்தை தேர்வு செய்யவும்:
+            </p>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
+              <div className="relative flex-1">
+                <input
+                  type="time"
+                  value={customTimeVal}
+                  onChange={(e) => handleCustomTimeChange(e.target.value)}
+                  className="w-full p-3 bg-white border border-ivory-300 rounded-lg text-sm font-mono font-bold text-obsidian-900 focus:outline-none focus:border-champagne-500 focus:ring-2 focus:ring-champagne-500/30 shadow-sm"
+                  aria-label="Pick custom time"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleCustomTimeChange(customTimeVal)}
+                className={`px-5 py-3 rounded-lg text-xs font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shrink-0 ${
+                  isCustomSelected
+                    ? 'bg-champagne-500 text-obsidian-950 shadow-sm border border-champagne-600'
+                    : 'bg-obsidian-900 hover:bg-obsidian-800 text-white'
+                }`}
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Apply: {format24To12(customTimeVal)}</span>
+              </button>
+            </div>
+
+            {/* Quick Popular Times */}
+            <div className="pt-2 border-t border-ivory-200 flex items-center flex-wrap gap-1.5">
+              <span className="text-[10px] font-mono text-obsidian-800/60 uppercase">Quick Pick:</span>
+              {['06:00 AM', '07:30 AM', '10:00 AM', '01:00 PM', '03:30 PM', '06:00 PM', '08:00 PM'].map((t) => {
+                const isThisQuick = selectedTime === `${t} (Custom)` || selectedTime === t;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => handleQuickTime(t)}
+                    className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors border ${
+                      isThisQuick
+                        ? 'bg-champagne-500 text-obsidian-950 font-bold border-champagne-600'
+                        : 'bg-white text-obsidian-800 border-ivory-300 hover:border-obsidian-800'
+                    }`}
+                  >
+                    {t}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </motion.div>
       )}
