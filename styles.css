@@ -224,7 +224,7 @@ section{position:relative;}
 .pkg-name{font-size:clamp(34px,6vw,80px);font-weight:700;font-family:'Bricolage Grotesque',sans-serif;transition:color .4s;}
 .pkg-enq{font-size:14px;font-weight:600;color:var(--peach);display:flex;align-items:center;gap:8px;}
 .pkg-feats{max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease,opacity .4s,margin .4s;display:flex;gap:44px;flex-wrap:wrap;}
-.pkg-feats div{font-size:15px;color:rgba(253,251,245,.7);display:flex;align-items:center;gap:8px;}
+.pkg-feats div{font-size:15px;color:rgba(160, 159, 153, 0.7);display:flex;align-items:center;gap:8px;}
 .pkg:hover .pkg-name{color:var(--peach);}
 .pkg:hover .pkg-feats{max-height:100px;opacity:1;margin-top:22px;}
 
