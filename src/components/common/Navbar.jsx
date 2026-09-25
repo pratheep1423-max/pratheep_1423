@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { Menu, X, ShieldCheck, ArrowRight, Camera, Sun, Moon } from 'lucide-react';
 
 export const Navbar = () => {
-  const { currentView, navigateTo, setCursorText, setCursorVariant, isAdminMode, theme, toggleTheme, siteSettings } = useApp();
+  const { currentView, navigateTo, setCursorText, setCursorVariant, isAdminMode, theme, toggleTheme, siteSettings, isAdminAuthenticated } = useApp();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -35,10 +35,12 @@ export const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
+          isAdminAuthenticated ? 'top-10' : 'top-0'
+        } ${
           scrolled
             ? 'py-3 glass-panel shadow-editorial border-b border-ivory-300/60'
-            : 'py-6 bg-transparent'
+            : 'py-5 bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -173,7 +175,7 @@ export const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-[72px] z-30 bg-studio-bg/95 backdrop-blur-xl flex flex-col justify-between p-8 border-t border-ivory-300 lg:hidden"
+            className={`fixed inset-0 ${isAdminAuthenticated ? 'top-[112px]' : 'top-[72px]'} z-30 bg-studio-bg/95 backdrop-blur-xl flex flex-col justify-between p-8 border-t border-ivory-300 lg:hidden`}
           >
             <div className="space-y-6 pt-4">
               {navLinks.map((link, idx) => (

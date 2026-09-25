@@ -13,7 +13,7 @@ export const AdminFloatingBar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-obsidian-950/95 border-b border-champagne-500/40 text-ivory-50 px-4 py-2 shadow-2xl backdrop-blur-md flex items-center justify-between text-xs font-mono">
+    <div className="fixed top-0 left-0 right-0 z-50 h-10 bg-obsidian-950/95 border-b border-champagne-500/40 text-ivory-50 px-4 shadow-2xl backdrop-blur-md flex items-center justify-between text-xs font-mono">
       <div className="flex items-center gap-3">
         <span className="px-2 py-0.5 bg-champagne-500 text-obsidian-950 font-bold rounded text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-gold-glow">
           <ShieldCheck className="w-3.5 h-3.5" />
