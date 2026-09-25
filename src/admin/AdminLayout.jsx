@@ -10,6 +10,7 @@ import { PortfolioManager } from './PortfolioManager';
 import { PackageManager } from './PackageManager';
 import { EnquiryInbox } from './EnquiryInbox';
 import { SettingsManager } from './SettingsManager';
+import { BtsManager } from './BtsManager';
 import { Menu, ShieldCheck } from 'lucide-react';
 
 export const AdminLayout = () => {
@@ -40,6 +41,7 @@ export const AdminLayout = () => {
       case 'calendar': return <CalendarManager />;
       case 'customers': return <CustomerManager />;
       case 'portfolio': return <PortfolioManager />;
+      case 'bts': return <BtsManager />;
       case 'packages':
       case 'services': return <PackageManager />;
       case 'enquiries': return <EnquiryInbox />;

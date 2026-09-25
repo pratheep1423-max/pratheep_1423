@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   Database,
   LogOut,
-  X
+  X,
+  Film
 } from 'lucide-react';
 
 export const AdminSidebar = ({ isOpen = false, onClose }) => {
@@ -25,6 +26,7 @@ export const AdminSidebar = ({ isOpen = false, onClose }) => {
     { id: 'calendar', label: 'Availability Calendar', icon: CalendarDays },
     { id: 'customers', label: 'Customers', icon: Users },
     { id: 'portfolio', label: 'Portfolio Gallery', icon: Camera },
+    { id: 'bts', label: 'Behind The Scenes', icon: Film },
     { id: 'packages', label: 'Packages & Services', icon: Layers },
     { id: 'enquiries', label: 'Enquiry Inbox', icon: Inbox },
     { id: 'settings', label: 'Studio Settings', icon: Settings },
