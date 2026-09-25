@@ -375,3 +375,33 @@ export const TESTIMONIALS = [
     image: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80'
   }
 ];
+
+export const INITIAL_SITE_SETTINGS = {
+  brandName: '2M PICTURES',
+  tagline: 'Stories Worth Remembering.',
+  heroBadge: 'FINE ART PHOTOGRAPHY STUDIO',
+  heroTitle: 'Stories Worth Remembering.',
+  heroSubtitle: 'We capture real moments and transform them into timeless visual stories.',
+  heroImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=90',
+  heroCtaText: 'BOOK YOUR SESSION',
+  aboutSubtitle: '02 / ABOUT THE STUDIO',
+  aboutTitle: "We don't take pictures. We craft heirlooms.",
+  aboutDescription: 'Founded in 2020, 2M PICTURES was built on a simple promise: to capture life’s most profound transitions—weddings, milestones, high-fashion editorials, and quiet intimate gazes—with elevated artistic rigor.',
+  directorName: 'Pratheep',
+  directorRole: 'Creative Director & Founder',
+  directorImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80',
+  email: 'admin@2mpictures.com',
+  phone: '+91 9876543210',
+  whatsapp: '919876543210',
+  address: 'Main Studio Avenue, Luxury District',
+  instagram: 'https://instagram.com',
+  facebook: 'https://facebook.com',
+  youtube: 'https://youtube.com',
+  bts1: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80',
+  bts2: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80',
+  bts3: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80',
+  bts4: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80',
+  beforeAfterOriginal: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=50&sat=-40&con=-20',
+  beforeAfterEdited: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'
+};
+
