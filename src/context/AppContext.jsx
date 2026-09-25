@@ -5,11 +5,9 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   // Navigation & View mode state
-  const [currentView, setCurrentView] = useState(() => {
-    return window.location.pathname.startsWith('/admin') ? 'admin' : 'home';
-  }); // 'home', 'portfolio', 'services', 'packages', 'about', 'contact', 'booking', 'admin'
+  const [currentView, setCurrentView] = useState('home'); // 'home', 'portfolio', 'services', 'packages', 'about', 'contact', 'booking', 'admin'
   const [adminTab, setAdminTab] = useState('dashboard'); // 'dashboard', 'bookings', 'calendar', 'customers', 'services', 'packages', 'portfolio', 'enquiries', 'settings'
-  const [isAdminMode, setIsAdminMode] = useState(() => window.location.pathname.startsWith('/admin'));
+  const [isAdminMode, setIsAdminMode] = useState(false);
 
   // Admin Authentication State
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
@@ -67,7 +65,6 @@ export const AppProvider = ({ children }) => {
     localStorage.removeItem('2m_admin_user');
     showToast('Admin Session Terminated.');
     setCurrentView('home');
-    window.history.pushState({}, '', '/');
   };
 
   // Pre-selected parameters for booking wizard
@@ -82,8 +79,6 @@ export const AppProvider = ({ children }) => {
   const [packages, setPackages] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
   const [blockedDates, setBlockedDates] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
-  const [siteSettings, setSiteSettings] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Toast Notification State
@@ -120,16 +115,14 @@ export const AppProvider = ({ children }) => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [b, c, p, s, pk, e, bd, t, st] = await Promise.all([
+      const [b, c, p, s, pk, e, bd] = await Promise.all([
         dataService.getBookings(),
         dataService.getCustomers(),
         dataService.getPortfolio(),
         dataService.getServices(),
         dataService.getPackages(),
         dataService.getEnquiries(),
-        dataService.getBlockedDates(),
-        dataService.getTestimonials(),
-        dataService.getSiteSettings()
+        dataService.getBlockedDates()
       ]);
       setBookings(b);
       setCustomers(c);
@@ -138,8 +131,6 @@ export const AppProvider = ({ children }) => {
       setPackages(pk);
       setEnquiries(e);
       setBlockedDates(bd);
-      setTestimonials(t);
-      setSiteSettings(st);
     } catch (err) {
       console.error('Failed to load initial data:', err);
     } finally {
@@ -169,18 +160,10 @@ export const AppProvider = ({ children }) => {
     if (extra.service) setSelectedServiceForBooking(extra.service);
     if (extra.package) setSelectedPackageForBooking(extra.package);
     setCurrentView(view);
-    window.history.pushState({}, '', view === 'admin' ? '/admin' : '/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Data mutation handlers
-  const updateSiteSettings = async (newSettings) => {
-    const updated = await dataService.updateSiteSettings(newSettings);
-    setSiteSettings(updated);
-    showToast('Site Settings & Content updated.');
-    return updated;
-  };
-
   const createBooking = async (bookingData) => {
     const newBk = await dataService.createBooking(bookingData);
     const updated = await dataService.getBookings();
@@ -236,58 +219,10 @@ export const AppProvider = ({ children }) => {
     showToast('Portfolio status updated.');
   };
 
-  const addService = async (serviceData) => {
-    const updated = await dataService.addService(serviceData);
-    setServices(updated);
-    showToast('New Service added.');
-  };
-
-  const updateService = async (srv) => {
-    const updated = await dataService.updateService(srv);
-    setServices(updated);
-    showToast('Service updated.');
-  };
-
-  const deleteService = async (id) => {
-    const updated = await dataService.deleteService(id);
-    setServices(updated);
-    showToast('Service deleted.');
-  };
-
-  const addPackage = async (packageData) => {
-    const updated = await dataService.addPackage(packageData);
-    setPackages(updated);
-    showToast('New Package added.');
-  };
-
   const updatePackage = async (pkg) => {
     const updated = await dataService.updatePackage(pkg);
     setPackages(updated);
     showToast('Package updated.');
-  };
-
-  const deletePackage = async (id) => {
-    const updated = await dataService.deletePackage(id);
-    setPackages(updated);
-    showToast('Package deleted.');
-  };
-
-  const addTestimonial = async (t) => {
-    const updated = await dataService.addTestimonial(t);
-    setTestimonials(updated);
-    showToast('Testimonial added.');
-  };
-
-  const updateTestimonial = async (t) => {
-    const updated = await dataService.updateTestimonial(t);
-    setTestimonials(updated);
-    showToast('Testimonial updated.');
-  };
-
-  const deleteTestimonial = async (id) => {
-    const updated = await dataService.deleteTestimonial(id);
-    setTestimonials(updated);
-    showToast('Testimonial deleted.');
   };
 
   return (
@@ -316,9 +251,6 @@ export const AppProvider = ({ children }) => {
         packages,
         enquiries,
         blockedDates,
-        testimonials,
-        siteSettings,
-        updateSiteSettings,
         loading,
         toast,
         showToast,
@@ -337,15 +269,7 @@ export const AppProvider = ({ children }) => {
         addPortfolioItem,
         deletePortfolioItem,
         toggleFeaturedPortfolio,
-        addService,
-        updateService,
-        deleteService,
-        addPackage,
         updatePackage,
-        deletePackage,
-        addTestimonial,
-        updateTestimonial,
-        deleteTestimonial,
         reloadAll: loadData
       }}
     >

@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useApp } from '../../context/AppContext';
+import { TESTIMONIALS } from '../../data/mockData';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 export const Testimonials = () => {
-  const { testimonials } = useApp();
   const [activeIdx, setActiveIdx] = useState(0);
 
-  const list = testimonials && testimonials.length > 0 ? testimonials : [
-    {
-      id: 'test-1',
-      name: 'Alexander & Charlotte Vance',
-      event: 'Luxury Amalfi Wedding',
-      quote: '2M PICTURES turned our wedding into an unforgettable masterpiece. Every photograph feels like a still from a high-end cinema classic.'
-    }
-  ];
-
-  const t = list[activeIdx % list.length] || list[0];
+  const t = TESTIMONIALS[activeIdx] || TESTIMONIALS[0];
 
   useEffect(() => {
-    if (list.length <= 1) return;
     const timer = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % list.length);
+      setActiveIdx((prev) => (prev + 1) % TESTIMONIALS.length);
     }, 7000);
     return () => clearInterval(timer);
-  }, [list.length]);
+  }, []);
 
   return (
     <section className="py-24 bg-obsidian-900 text-ivory-50 relative overflow-hidden film-grain">
@@ -64,39 +53,37 @@ export const Testimonials = () => {
         </div>
 
         {/* Controls & Progress Indicator */}
-        {list.length > 1 && (
-          <div className="mt-8 flex items-center justify-center gap-6">
-            <button
-              onClick={() => setActiveIdx((prev) => (prev - 1 + list.length) % list.length)}
-              className="p-2 border border-obsidian-800 rounded-full hover:border-champagne-400 text-ivory-200 hover:text-white transition-colors"
-              aria-label="Previous Testimonial"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
+        <div className="mt-8 flex items-center justify-center gap-6">
+          <button
+            onClick={() => setActiveIdx((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+            className="p-2 border border-obsidian-800 rounded-full hover:border-champagne-400 text-ivory-200 hover:text-white transition-colors"
+            aria-label="Previous Testimonial"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
 
-            {/* Dots Indicator */}
-            <div className="flex items-center gap-2">
-              {list.map((item, idx) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveIdx(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeIdx === idx ? 'w-8 bg-champagne-400' : 'w-2 bg-obsidian-800 hover:bg-ivory-200/40'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => setActiveIdx((prev) => (prev + 1) % list.length)}
-              className="p-2 border border-obsidian-800 rounded-full hover:border-champagne-400 text-ivory-200 hover:text-white transition-colors"
-              aria-label="Next Testimonial"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+          {/* Dots Indicator */}
+          <div className="flex items-center gap-2">
+            {TESTIMONIALS.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveIdx(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  activeIdx === idx ? 'w-8 bg-champagne-400' : 'w-2 bg-obsidian-800 hover:bg-ivory-200/40'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
-        )}
+
+          <button
+            onClick={() => setActiveIdx((prev) => (prev + 1) % TESTIMONIALS.length)}
+            className="p-2 border border-obsidian-800 rounded-full hover:border-champagne-400 text-ivory-200 hover:text-white transition-colors"
+            aria-label="Next Testimonial"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
 
       </div>
     </section>
