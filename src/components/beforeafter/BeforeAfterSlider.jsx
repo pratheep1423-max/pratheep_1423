@@ -2,8 +2,10 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BEFORE_AFTER_SAMPLES } from '../../data/mockData';
 import { SlidersHorizontal, Sparkles } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 
 export const BeforeAfterSlider = () => {
+  const { siteSettings } = useApp();
   const [sliderPosition, setSliderPosition] = useState(50); // percentage 0-100
   const [isDragging, setIsDragging] = useState(false);
   const [activeSampleIdx, setActiveSampleIdx] = useState(0);
@@ -11,6 +13,8 @@ export const BeforeAfterSlider = () => {
   const containerRef = useRef(null);
 
   const sample = BEFORE_AFTER_SAMPLES[activeSampleIdx] || BEFORE_AFTER_SAMPLES[0];
+  const originalImg = siteSettings?.beforeAfterOriginal || sample.original;
+  const editedImg = siteSettings?.beforeAfterEdited || sample.edited;
 
   const handleMove = useCallback((clientX) => {
     if (!containerRef.current) return;
@@ -102,7 +106,7 @@ export const BeforeAfterSlider = () => {
         >
           {/* EDITED IMAGE (Background Layer) */}
           <img
-            src={sample.edited}
+            src={editedImg}
             alt="Edited Photograph"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           />
@@ -118,7 +122,7 @@ export const BeforeAfterSlider = () => {
             style={{ width: `${sliderPosition}%` }}
           >
             <img
-              src={sample.original}
+              src={originalImg}
               alt="Original RAW Photograph"
               className="absolute inset-0 w-full h-full object-cover max-w-none"
               style={{ width: containerRef.current ? containerRef.current.clientWidth : '100%' }}

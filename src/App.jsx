@@ -4,6 +4,7 @@ import { CustomCursor } from './components/common/CustomCursor';
 import { Toast } from './components/common/Toast';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
+import { AdminFloatingBar } from './components/common/AdminFloatingBar';
 import { Home } from './pages/Home';
 import { PortfolioPage } from './pages/PortfolioPage';
 import { ServicesPage } from './pages/ServicesPage';
@@ -13,7 +14,7 @@ import { BookingPage } from './pages/BookingPage';
 import { AdminLayout } from './admin/AdminLayout';
 
 export default function App() {
-  const { currentView, isAdminMode } = useApp();
+  const { currentView, isAdminMode, isAdminAuthenticated } = useApp();
 
   if (isAdminMode || currentView === 'admin') {
     return (
@@ -45,7 +46,8 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-studio-bg text-obsidian-900 selection:bg-champagne-500 selection:text-obsidian-950 font-sans">
+    <div className={`relative min-h-screen bg-studio-bg text-obsidian-900 selection:bg-champagne-500 selection:text-obsidian-950 font-sans ${isAdminAuthenticated ? 'pt-10' : ''}`}>
+      <AdminFloatingBar />
       <CustomCursor />
       <Navbar />
       {renderView()}

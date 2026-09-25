@@ -33,12 +33,6 @@ export const AdminLogin = () => {
     }
   };
 
-  const handleAutoFillDemo = () => {
-    setUsername('admin@2mpictures.com');
-    setPassword('pratheep@217');
-    setError('');
-  };
-
   return (
     <div className="min-h-screen bg-obsidian-950 text-ivory-50 flex items-center justify-center p-6 relative overflow-hidden font-sans">
       {/* Subtle Background Elements */}
@@ -67,22 +61,6 @@ export const AdminLogin = () => {
               Sign in with credentials to manage reservations & studio content
             </p>
           </div>
-        </div>
-
-        {/* Demo Credentials Auto-Fill Banner */}
-        <div className="mb-6 p-3.5 bg-obsidian-950 border border-champagne-500/20 rounded-xl flex items-center justify-between text-xs font-mono">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-champagne-400 uppercase tracking-wider block font-semibold">Demo Credentials</span>
-            <span className="text-ivory-200/80 block">User: <strong className="text-white">admin@2mpictures.com</strong></span>
-            <span className="text-ivory-200/80 block">Pass: <strong className="text-white">pratheep@217</strong></span>
-          </div>
-          <button
-            type="button"
-            onClick={handleAutoFillDemo}
-            className="px-3 py-1.5 bg-champagne-500/20 hover:bg-champagne-500 text-champagne-300 hover:text-obsidian-950 border border-champagne-500/50 text-[10px] uppercase font-bold tracking-wider rounded transition-colors"
-          >
-            Auto-Fill
-          </button>
         </div>
 
         {/* Error Alert */}
