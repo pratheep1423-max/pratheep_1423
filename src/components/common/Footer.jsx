@@ -3,13 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { Camera, Instagram, Facebook, Twitter, Mail, Phone, MapPin, Shield } from 'lucide-react';
 
 export const Footer = () => {
-  const { navigateTo, siteSettings } = useApp();
-
-  const brandName = siteSettings?.brandName || '2M PICTURES';
-  const tagline = siteSettings?.tagline || 'Stories Worth Remembering.';
-  const address = siteSettings?.address || '120 Fine Art Avenue, Suite 400\nNew York, NY 10012';
-  const phone = siteSettings?.phone || '+1 (800) 2M-STUDIO';
-  const email = siteSettings?.email || 'admin@2mpictures.com';
+  const { navigateTo } = useApp();
 
   return (
     <footer className="bg-obsidian-900 text-ivory-100 pt-20 pb-12 border-t border-obsidian-800 relative overflow-hidden film-grain">
@@ -20,10 +14,10 @@ export const Footer = () => {
           <div className="lg:col-span-2 space-y-6">
             <div>
               <h3 className="font-serif text-3xl md:text-4xl font-bold tracking-wider text-ivory-50">
-                {brandName}
+                2M PICTURES
               </h3>
               <p className="text-champagne-400 font-serif italic text-lg mt-1">
-                "{tagline}"
+                "Stories Worth Remembering."
               </p>
             </div>
             <p className="text-ivory-200/70 text-sm leading-relaxed max-w-sm font-light">
@@ -80,15 +74,15 @@ export const Footer = () => {
             <ul className="space-y-3 text-xs text-ivory-200/70 font-light">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-champagne-500 shrink-0 mt-0.5" />
-                <span className="whitespace-pre-line">{address}</span>
+                <span>120 Fine Art Avenue, Suite 400<br />New York, NY 10012</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-champagne-500 shrink-0" />
-                <span>{phone}</span>
+                <span>+1 (800) 2M-STUDIO</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-champagne-500 shrink-0" />
-                <span>{email}</span>
+                <span>hello@2mpictures.com</span>
               </li>
             </ul>
           </div>

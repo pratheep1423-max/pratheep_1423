@@ -4,13 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { ArrowDown, Camera, Sparkles } from 'lucide-react';
 
 export const HeroSection = () => {
-  const { siteSettings, navigateTo, setCursorText, setCursorVariant } = useApp();
-
-  const heroBg = siteSettings?.heroImage || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=90';
-  const badgeText = siteSettings?.heroBadge || 'FINE ART PHOTOGRAPHY STUDIO';
-  const mainTitle = siteSettings?.heroTitle || 'Stories Worth Remembering.';
-  const subtitleText = siteSettings?.heroSubtitle || 'We capture real moments and transform them into timeless visual stories.';
-  const ctaText = siteSettings?.heroCtaText || 'BOOK YOUR SESSION';
+  const { navigateTo, setCursorText, setCursorVariant } = useApp();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-obsidian-950 text-ivory-50 pt-20 pb-16">
@@ -19,7 +13,7 @@ export const HeroSection = () => {
         <motion.div
           className="w-full h-full bg-cover bg-center opacity-30 mix-blend-luminosity scale-105"
           style={{
-            backgroundImage: `url('${heroBg}')`
+            backgroundImage: `url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=90')`
           }}
           animate={{ scale: [1.02, 1.08] }}
           transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
@@ -43,7 +37,7 @@ export const HeroSection = () => {
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-champagne-500/30 bg-obsidian-900/60 text-champagne-400 text-xs font-mono uppercase tracking-[0.3em] mb-8 shadow-gold-glow backdrop-blur-md"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>{badgeText}</span>
+          <span>FINE ART PHOTOGRAPHY STUDIO</span>
         </motion.div>
 
         {/* Main Headline */}
@@ -53,7 +47,8 @@ export const HeroSection = () => {
           transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="font-serif text-5xl sm:text-7xl md:text-8xl font-normal tracking-tight text-ivory-50 max-w-4xl leading-[1.05]"
         >
-          {mainTitle}
+          Stories Worth <br />
+          <span className="italic font-light text-champagne-300 drop-shadow-sm">Remembering.</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -63,7 +58,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="mt-6 text-lg sm:text-xl text-ivory-200/80 max-w-2xl font-light leading-relaxed"
         >
-          {subtitleText}
+          We capture real moments and transform them into timeless visual stories.
         </motion.p>
 
         {/* Action Buttons */}
@@ -80,7 +75,7 @@ export const HeroSection = () => {
             className="w-full sm:w-auto px-8 py-4 bg-champagne-500 text-obsidian-950 font-semibold text-xs uppercase tracking-[0.25em] rounded border border-champagne-400 hover:bg-champagne-400 transition-all duration-300 shadow-gold-glow flex items-center justify-center gap-2 group"
           >
             <Camera className="w-4 h-4 text-obsidian-950" />
-            <span>{ctaText}</span>
+            <span>BOOK YOUR SESSION</span>
           </button>
 
           <button

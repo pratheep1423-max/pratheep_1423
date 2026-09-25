@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext';
 import { Menu, X, ShieldCheck, ArrowRight, Camera, Sun, Moon } from 'lucide-react';
 
 export const Navbar = () => {
-  const { currentView, navigateTo, setCursorText, setCursorVariant, isAdminMode, theme, toggleTheme, siteSettings } = useApp();
+  const { currentView, navigateTo, setCursorText, setCursorVariant, isAdminMode, theme, toggleTheme } = useApp();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -30,8 +30,6 @@ export const Navbar = () => {
     setMobileMenuOpen(false);
   };
 
-  const brandName = siteSettings?.brandName || '2M PICTURES';
-
   return (
     <>
       <header
@@ -50,7 +48,7 @@ export const Navbar = () => {
             className="group text-left focus:outline-none"
           >
             <span className="font-serif text-2xl md:text-3xl font-bold tracking-wider text-obsidian-900 group-hover:text-champagne-600 transition-colors">
-              {brandName}
+              2M PICTURES
             </span>
             <span className="block text-[9px] uppercase tracking-[0.35em] text-obsidian-800/60 font-mono -mt-1">
               Fine Art Photography

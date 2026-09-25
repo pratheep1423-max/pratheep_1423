@@ -5,13 +5,8 @@ import { sendEnquiryToWhatsApp } from '../../services/whatsappService';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle2, Instagram, Facebook, Twitter } from 'lucide-react';
 
 export const ContactForm = () => {
-  const { createEnquiry, siteSettings } = useApp();
-
-  const brandName = siteSettings?.brandName || '2M PICTURES';
-  const address = siteSettings?.address || '120 Fine Art Avenue, Suite 400\nNew York, NY 10012';
-  const phone = siteSettings?.phone || '+1 (800) 2M-STUDIO';
-  const email = siteSettings?.email || 'admin@2mpictures.com';
-
+  const { createEnquiry } = useApp();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -71,7 +66,7 @@ export const ContactForm = () => {
           <div className="lg:col-span-2 bg-obsidian-900 text-ivory-50 rounded-xl p-8 md:p-10 border border-champagne-500/30 shadow-2xl space-y-8">
             <div>
               <h3 className="font-serif text-3xl font-bold tracking-wide">
-                {brandName}
+                2M PICTURES
               </h3>
               <p className="text-champagne-400 font-serif italic text-sm mt-1">
                 Fine Art Photography Studio
@@ -83,8 +78,8 @@ export const ContactForm = () => {
                 <MapPin className="w-5 h-5 text-champagne-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-ivory-200/50 uppercase block text-[10px]">Studio Location</span>
-                  <span className="text-sm font-sans font-light text-white block mt-0.5 whitespace-pre-line">
-                    {address}
+                  <span className="text-sm font-sans font-light text-white block mt-0.5">
+                    120 Fine Art Avenue, Suite 400<br />New York, NY 10012
                   </span>
                 </div>
               </div>
@@ -94,7 +89,7 @@ export const ContactForm = () => {
                 <div>
                   <span className="text-ivory-200/50 uppercase block text-[10px]">Direct Phone</span>
                   <span className="text-sm font-sans font-light text-white block mt-0.5">
-                    {phone}
+                    +1 (800) 2M-STUDIO / +1 (555) 019-2834
                   </span>
                 </div>
               </div>
@@ -104,7 +99,7 @@ export const ContactForm = () => {
                 <div>
                   <span className="text-ivory-200/50 uppercase block text-[10px]">Electronic Mail</span>
                   <span className="text-sm font-sans font-light text-white block mt-0.5">
-                    {email}
+                    hello@2mpictures.com
                   </span>
                 </div>
               </div>
