@@ -31,6 +31,7 @@ export const Navbar = () => {
   };
 
   const brandName = siteSettings?.brandName || '2M PICTURES';
+  const isDarkHeader = theme === 'dark' || (currentView === 'home' && !scrolled);
 
   return (
     <>
@@ -39,7 +40,7 @@ export const Navbar = () => {
           isAdminAuthenticated ? 'top-10' : 'top-0'
         } ${
           scrolled
-            ? 'py-3 glass-panel shadow-editorial border-b border-ivory-300/60'
+            ? 'py-3 glass-panel shadow-editorial border-b border-ivory-300/60 dark:border-obsidian-800'
             : 'py-5 bg-transparent'
         }`}
       >
@@ -51,10 +52,14 @@ export const Navbar = () => {
             onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
             className="group text-left focus:outline-none"
           >
-            <span className="font-serif text-2xl md:text-3xl font-bold tracking-wider text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+            <span className={`font-serif text-2xl md:text-3xl font-bold tracking-wider transition-colors ${
+              isDarkHeader ? 'text-ivory-50 group-hover:text-champagne-400' : 'text-obsidian-900 group-hover:text-champagne-600'
+            }`}>
               {brandName}
             </span>
-            <span className="block text-[9px] uppercase tracking-[0.35em] text-obsidian-800/60 font-mono -mt-1">
+            <span className={`block text-[9px] uppercase tracking-[0.35em] font-mono -mt-1 ${
+              isDarkHeader ? 'text-ivory-200/60' : 'text-obsidian-800/60'
+            }`}>
               Fine Art Photography
             </span>
           </button>
@@ -71,15 +76,21 @@ export const Navbar = () => {
                   onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
                   className={`relative text-xs uppercase tracking-[0.2em] font-medium transition-colors py-1 ${
                     isActive
-                      ? 'text-champagne-600 font-semibold'
-                      : 'text-obsidian-900/80 hover:text-obsidian-900'
+                      ? isDarkHeader
+                        ? 'text-champagne-400 font-bold'
+                        : 'text-champagne-600 font-semibold'
+                      : isDarkHeader
+                        ? 'text-ivory-100/90 hover:text-white font-medium'
+                        : 'text-obsidian-900/80 hover:text-obsidian-900'
                   }`}
                 >
                   {link.name}
                   {isActive && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-champagne-500"
+                      className={`absolute bottom-0 left-0 right-0 h-[1.5px] ${
+                        isDarkHeader ? 'bg-champagne-400' : 'bg-champagne-500'
+                      }`}
                     />
                   )}
                 </button>
@@ -94,7 +105,11 @@ export const Navbar = () => {
               onClick={toggleTheme}
               onMouseEnter={() => { setCursorText(theme === 'dark' ? 'LIGHT' : 'DARK'); setCursorVariant('hover'); }}
               onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
-              className="p-2 rounded-full border border-ivory-300 text-obsidian-900 hover:border-champagne-500 hover:text-champagne-600 transition-all duration-300 bg-white/70 dark:bg-studio-darkCard/70 backdrop-blur-md flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium"
+              className={`p-2 rounded-full border transition-all duration-300 backdrop-blur-md flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium ${
+                isDarkHeader
+                  ? 'border-obsidian-800 bg-obsidian-900/80 text-ivory-100 hover:border-champagne-500 hover:text-champagne-400'
+                  : 'border-ivory-300 bg-white/70 text-obsidian-900 hover:border-champagne-500 hover:text-champagne-600'
+              }`}
               title={theme === 'dark' ? 'Switch to Bright Theme' : 'Switch to Dark Theme'}
               aria-label="Toggle Theme Mode"
             >
@@ -117,11 +132,13 @@ export const Navbar = () => {
               className={`flex items-center gap-2 text-[11px] uppercase tracking-wider px-3 py-2 rounded border transition-colors ${
                 isAdminMode
                   ? 'bg-obsidian-900 text-champagne-400 border-champagne-500'
-                  : 'text-obsidian-800/70 border-ivory-300 hover:border-obsidian-900 hover:text-obsidian-900'
+                  : isDarkHeader
+                    ? 'text-ivory-100 border-obsidian-700 hover:border-champagne-400 hover:text-white bg-obsidian-900/40'
+                    : 'text-obsidian-800/70 border-ivory-300 hover:border-obsidian-900 hover:text-obsidian-900'
               }`}
               title="Toggle Studio Admin System"
             >
-              <ShieldCheck className="w-3.5 h-3.5" />
+              <ShieldCheck className="w-3.5 h-3.5 text-champagne-400" />
               <span>Admin Portal</span>
             </button>
 
@@ -130,13 +147,12 @@ export const Navbar = () => {
               onClick={() => handleNavClick('booking')}
               onMouseEnter={() => { setCursorText('BOOK'); setCursorVariant('hover'); }}
               onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
-              className="relative group overflow-hidden bg-obsidian-900 text-ivory-50 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] rounded border border-obsidian-900 hover:border-champagne-500 transition-all shadow-sm"
+              className="relative group overflow-hidden bg-champagne-500 hover:bg-champagne-400 text-obsidian-950 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.2em] rounded border border-champagne-500 transition-all shadow-gold-glow"
             >
-              <span className="relative z-10 flex items-center gap-2 group-hover:text-champagne-300 transition-colors">
+              <span className="relative z-10 flex items-center gap-2">
                 BOOK NOW
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-obsidian-800 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </button>
           </div>
 
@@ -144,21 +160,27 @@ export const Navbar = () => {
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="p-2 text-obsidian-900 hover:text-champagne-600 focus:outline-none"
+              className={`p-2 focus:outline-none transition-colors ${
+                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+              }`}
               title={theme === 'dark' ? 'Switch to Bright Theme' : 'Switch to Dark Theme'}
             >
               {theme === 'dark' ? <Sun className="w-5 h-5 text-champagne-400" /> : <Moon className="w-5 h-5 text-obsidian-900" />}
             </button>
             <button
               onClick={() => handleNavClick('admin')}
-              className="p-2 text-obsidian-900 hover:text-champagne-600"
+              className={`p-2 transition-colors ${
+                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+              }`}
               title="Admin Portal"
             >
-              <ShieldCheck className="w-5 h-5" />
+              <ShieldCheck className="w-5 h-5 text-champagne-400" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-obsidian-900 focus:outline-none"
+              className={`p-2 focus:outline-none transition-colors ${
+                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+              }`}
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
