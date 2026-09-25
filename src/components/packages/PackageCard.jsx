@@ -29,6 +29,14 @@ export const PackageCard = ({ pkg, idx }) => {
       )}
 
       <div>
+        {/* Package Cover Image */}
+        {pkg.image && (
+          <div className="relative h-44 rounded-lg overflow-hidden mb-6 bg-obsidian-950 border border-current/10">
+            <img src={pkg.image} alt={pkg.name} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950/80 via-transparent to-transparent opacity-60" />
+          </div>
+        )}
+
         {/* Tier Header */}
         <div className="border-b pb-6 border-current/10">
           <span className={`text-xs uppercase font-mono tracking-[0.3em] font-semibold ${

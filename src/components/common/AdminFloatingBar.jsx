@@ -35,24 +35,6 @@ export const AdminFloatingBar = () => {
         </button>
 
         <button
-          onClick={() => handleOpenTab('packages')}
-          className="px-2.5 py-1 bg-obsidian-900 border border-obsidian-700 hover:border-champagne-400 text-ivory-200 hover:text-white rounded text-[10px] uppercase font-bold tracking-wider flex items-center gap-1 transition-all whitespace-nowrap"
-          title="Manage Services and Packages"
-        >
-          <Layers className="w-3 h-3 text-champagne-400" />
-          <span>Packages & Services</span>
-        </button>
-
-        <button
-          onClick={() => handleOpenTab('portfolio')}
-          className="px-2.5 py-1 bg-obsidian-900 border border-obsidian-700 hover:border-champagne-400 text-ivory-200 hover:text-white rounded text-[10px] uppercase font-bold tracking-wider flex items-center gap-1 transition-all whitespace-nowrap"
-          title="Manage Portfolio Showcase"
-        >
-          <Camera className="w-3 h-3 text-champagne-400" />
-          <span>Portfolio</span>
-        </button>
-
-        <button
           onClick={() => handleOpenTab('dashboard')}
           className="px-2.5 py-1 bg-champagne-500 text-obsidian-950 hover:bg-champagne-400 font-bold rounded text-[10px] uppercase tracking-wider flex items-center gap-1 transition-all whitespace-nowrap"
         >
