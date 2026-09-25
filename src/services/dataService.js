@@ -5,7 +5,9 @@ import {
   INITIAL_BOOKINGS,
   INITIAL_CUSTOMERS,
   INITIAL_ENQUIRIES,
-  INITIAL_BLOCKED_DATES
+  INITIAL_BLOCKED_DATES,
+  TESTIMONIALS,
+  INITIAL_SITE_SETTINGS
 } from '../data/mockData';
 
 // Helper to load or store in LocalStorage with fallback
@@ -36,6 +38,45 @@ import { getWhatsAppLink, ADMIN_WHATSAPP_NUMBER } from './whatsappService';
 const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export const dataService = {
+  // === SITE SETTINGS ===
+  async getSiteSettings() {
+    return getStorage('site_settings', INITIAL_SITE_SETTINGS);
+  },
+
+  async updateSiteSettings(newSettings) {
+    const current = getStorage('site_settings', INITIAL_SITE_SETTINGS);
+    const updated = { ...current, ...newSettings };
+    setStorage('site_settings', updated);
+    return updated;
+  },
+
+  // === TESTIMONIALS ===
+  async getTestimonials() {
+    return getStorage('testimonials', TESTIMONIALS);
+  },
+
+  async addTestimonial(item) {
+    const tests = getStorage('testimonials', TESTIMONIALS);
+    const newItem = { id: `test-${Date.now()}`, ...item };
+    const updated = [newItem, ...tests];
+    setStorage('testimonials', updated);
+    return updated;
+  },
+
+  async updateTestimonial(item) {
+    const tests = getStorage('testimonials', TESTIMONIALS);
+    const updated = tests.map(t => t.id === item.id ? item : t);
+    setStorage('testimonials', updated);
+    return updated;
+  },
+
+  async deleteTestimonial(id) {
+    const tests = getStorage('testimonials', TESTIMONIALS);
+    const updated = tests.filter(t => t.id !== id);
+    setStorage('testimonials', updated);
+    return updated;
+  },
+
   // === BOOKINGS ===
   async getBookings() {
     try {
@@ -177,13 +218,50 @@ export const dataService = {
     return getStorage('services', INITIAL_SERVICES);
   },
 
+  async addService(serviceData) {
+    const srvs = getStorage('services', INITIAL_SERVICES);
+    const newSrv = { id: `srv-${Date.now()}`, ...serviceData };
+    const updated = [...srvs, newSrv];
+    setStorage('services', updated);
+    return updated;
+  },
+
+  async updateService(updatedSrv) {
+    const srvs = getStorage('services', INITIAL_SERVICES);
+    const updated = srvs.map(s => s.id === updatedSrv.id ? updatedSrv : s);
+    setStorage('services', updated);
+    return updated;
+  },
+
+  async deleteService(id) {
+    const srvs = getStorage('services', INITIAL_SERVICES);
+    const updated = srvs.filter(s => s.id !== id);
+    setStorage('services', updated);
+    return updated;
+  },
+
   async getPackages() {
     return getStorage('packages', INITIAL_PACKAGES);
+  },
+
+  async addPackage(packageData) {
+    const pkgs = getStorage('packages', INITIAL_PACKAGES);
+    const newPkg = { id: `pkg-${Date.now()}`, ...packageData };
+    const updated = [...pkgs, newPkg];
+    setStorage('packages', updated);
+    return updated;
   },
 
   async updatePackage(updatedPkg) {
     const pkgs = getStorage('packages', INITIAL_PACKAGES);
     const updated = pkgs.map(p => p.id === updatedPkg.id ? updatedPkg : p);
+    setStorage('packages', updated);
+    return updated;
+  },
+
+  async deletePackage(id) {
+    const pkgs = getStorage('packages', INITIAL_PACKAGES);
+    const updated = pkgs.filter(p => p.id !== id);
     setStorage('packages', updated);
     return updated;
   },
@@ -230,3 +308,4 @@ export const dataService = {
     return updated;
   }
 };
+
