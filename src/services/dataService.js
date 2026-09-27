@@ -40,13 +40,44 @@ const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 export const dataService = {
   // === SITE SETTINGS ===
   async getSiteSettings() {
+    // Try loading from backend server first (shared across all users)
+    try {
+      const res = await fetch(`${BACKEND_URL}/settings`);
+      if (res.ok) {
+        const data = await res.json();
+        // If server has settings saved, use them
+        if (data.settings && Object.keys(data.settings).length > 0) {
+          // Also sync to localStorage for offline fallback
+          setStorage('site_settings', { ...INITIAL_SITE_SETTINGS, ...data.settings });
+          return { ...INITIAL_SITE_SETTINGS, ...data.settings };
+        }
+      }
+    } catch (e) {
+      console.log('Backend offline, loading site settings from localStorage:', e.message);
+    }
+    // Fallback to localStorage
     return getStorage('site_settings', INITIAL_SITE_SETTINGS);
   },
 
   async updateSiteSettings(newSettings) {
     const current = getStorage('site_settings', INITIAL_SITE_SETTINGS);
     const updated = { ...current, ...newSettings };
+    // Always save to localStorage for offline fallback
     setStorage('site_settings', updated);
+    // Try saving to backend server (so all users see the update)
+    try {
+      const res = await fetch(`${BACKEND_URL}/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSettings)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.settings) return { ...INITIAL_SITE_SETTINGS, ...data.settings };
+      }
+    } catch (e) {
+      console.log('Backend offline, settings saved to localStorage only:', e.message);
+    }
     return updated;
   },
 
