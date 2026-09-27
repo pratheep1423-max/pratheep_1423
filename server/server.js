@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 const DATA_DIR = path.join(__dirname, 'data');
 const BOOKINGS_FILE = path.join(DATA_DIR, 'bookings.json');
 const ENQUIRIES_FILE = path.join(DATA_DIR, 'enquiries.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 
 // Target WhatsApp number
 const ADMIN_WHATSAPP_NUMBER = '918248149082';
@@ -27,6 +28,10 @@ if (!fs.existsSync(BOOKINGS_FILE)) {
 
 if (!fs.existsSync(ENQUIRIES_FILE)) {
   fs.writeFileSync(ENQUIRIES_FILE, JSON.stringify([], null, 2));
+}
+
+if (!fs.existsSync(SETTINGS_FILE)) {
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify({}, null, 2));
 }
 
 // Helpers for JSON reading/writing
@@ -193,6 +198,34 @@ const server = http.createServer((req, res) => {
       } catch (err) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, error: 'Invalid JSON request' }));
+      }
+    });
+    return;
+  }
+
+  // GET /api/settings
+  if (req.method === 'GET' && url.pathname === '/api/settings') {
+    const settings = readJSON(SETTINGS_FILE);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, settings }));
+    return;
+  }
+
+  // PUT /api/settings
+  if (req.method === 'PUT' && url.pathname === '/api/settings') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const newSettings = JSON.parse(body);
+        const current = readJSON(SETTINGS_FILE);
+        const merged = { ...current, ...newSettings };
+        writeJSON(SETTINGS_FILE, merged);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, settings: merged }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: 'Invalid JSON payload' }));
       }
     });
     return;

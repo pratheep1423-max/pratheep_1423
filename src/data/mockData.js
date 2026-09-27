@@ -68,6 +68,7 @@ export const INITIAL_PACKAGES = [
     price: 1200,
     duration: '2 Hours',
     featured: false,
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
     photographers: '1 Photographer',
     photosCount: '100 Edited Photos',
     features: [
@@ -84,6 +85,7 @@ export const INITIAL_PACKAGES = [
     price: 2800,
     duration: '5 Hours',
     featured: true,
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
     photographers: '2 Photographers',
     photosCount: '300 Edited Photos',
     features: [
@@ -101,6 +103,7 @@ export const INITIAL_PACKAGES = [
     price: 5500,
     duration: 'Full Day',
     featured: false,
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
     photographers: '2 Photographers',
     photosCount: 'Unlimited Coverage',
     features: [

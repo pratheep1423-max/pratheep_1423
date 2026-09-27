@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { Save, Database, CheckCircle2, Sparkles, Image as ImageIcon, MessageSquare, Plus, Trash2 } from 'lucide-react';
+import { Save, Database, CheckCircle2, Sparkles, Image as ImageIcon, MessageSquare, Plus, Trash2, Upload, Film, ArrowRight } from 'lucide-react';
 
 export const SettingsManager = () => {
-  const { siteSettings, updateSiteSettings, testimonials, addTestimonial, deleteTestimonial, showToast } = useApp();
+  const { siteSettings, updateSiteSettings, testimonials, addTestimonial, deleteTestimonial, showToast, setAdminTab } = useApp();
 
   const [form, setForm] = useState({
     brandName: '',
@@ -70,6 +70,40 @@ export const SettingsManager = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageFileUpload = (key, file) => {
+    if (!file || !file.type.startsWith('image/')) {
+      showToast('Please select a valid image file.', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDimension = 1200;
+        let { width, height } = img;
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const optimized = canvas.toDataURL('image/jpeg', 0.85);
+        setForm((prev) => ({ ...prev, [key]: optimized }));
+        showToast(`Image uploaded & optimized.`);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSaveSettings = async (e) => {
@@ -241,49 +275,92 @@ export const SettingsManager = () => {
           </div>
 
           {/* BTS Photos Grid Inputs */}
-          <div className="pt-4 border-t border-ivory-200">
-            <span className="text-xs font-mono uppercase tracking-wider text-champagne-600 font-bold block mb-3">Behind The Scenes Gallery Photos (4 Photos)</span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+          <div className="pt-6 border-t border-ivory-200 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <label className="block uppercase mb-1 font-semibold text-obsidian-800 text-[10px]">BTS Image 1 URL</label>
-                <input
-                  type="url"
-                  name="bts1"
-                  value={form.bts1}
-                  onChange={handleChange}
-                  className="w-full p-2.5 bg-ivory-50 border border-ivory-300 rounded"
-                />
+                <span className="text-xs font-mono uppercase tracking-wider text-champagne-600 font-bold block">
+                  Behind The Scenes Gallery Photos (4 Photos)
+                </span>
+                <p className="text-[11px] font-mono text-obsidian-800/60 mt-0.5">
+                  Upload photos directly from your computer or switch to the dedicated Behind The Scenes Manager.
+                </p>
               </div>
-              <div>
-                <label className="block uppercase mb-1 font-semibold text-obsidian-800 text-[10px]">BTS Image 2 URL</label>
-                <input
-                  type="url"
-                  name="bts2"
-                  value={form.bts2}
-                  onChange={handleChange}
-                  className="w-full p-2.5 bg-ivory-50 border border-ivory-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block uppercase mb-1 font-semibold text-obsidian-800 text-[10px]">BTS Image 3 URL</label>
-                <input
-                  type="url"
-                  name="bts3"
-                  value={form.bts3}
-                  onChange={handleChange}
-                  className="w-full p-2.5 bg-ivory-50 border border-ivory-300 rounded"
-                />
-              </div>
-              <div>
-                <label className="block uppercase mb-1 font-semibold text-obsidian-800 text-[10px]">BTS Image 4 URL</label>
-                <input
-                  type="url"
-                  name="bts4"
-                  value={form.bts4}
-                  onChange={handleChange}
-                  className="w-full p-2.5 bg-ivory-50 border border-ivory-300 rounded"
-                />
-              </div>
+
+              <button
+                type="button"
+                onClick={() => setAdminTab('bts')}
+                className="px-3.5 py-1.5 bg-champagne-500/20 hover:bg-champagne-500 text-champagne-800 hover:text-obsidian-950 rounded text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors w-fit"
+              >
+                <Film className="w-3.5 h-3.5" />
+                <span>Open BTS Studio Manager</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
+              {[
+                { key: 'bts1', label: 'BTS Image 1' },
+                { key: 'bts2', label: 'BTS Image 2' },
+                { key: 'bts3', label: 'BTS Image 3' },
+                { key: 'bts4', label: 'BTS Image 4' }
+              ].map(({ key, label }) => (
+                <div key={key} className="p-3 bg-ivory-50 border border-ivory-300 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block uppercase font-semibold text-obsidian-800 text-[10px]">{label}</label>
+                    <label className="text-[10px] text-champagne-700 hover:text-champagne-900 font-bold cursor-pointer flex items-center gap-1">
+                      <Upload className="w-3 h-3" />
+                      <span>Upload</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            handleImageFileUpload(key, e.target.files[0]);
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+
+                  {form[key] ? (
+                    <div className="aspect-video w-full rounded overflow-hidden bg-obsidian-900 border border-ivory-200 relative group">
+                      <img src={form[key]} alt={label} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-obsidian-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <label className="px-2 py-1 bg-champagne-500 text-obsidian-950 rounded text-[10px] font-bold cursor-pointer flex items-center gap-1">
+                          <Upload className="w-3 h-3" />
+                          <span>Change</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                handleImageFileUpload(key, e.target.files[0]);
+                                e.target.value = '';
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="aspect-video w-full rounded border border-dashed border-ivory-300 flex items-center justify-center text-[10px] text-obsidian-800/40">
+                      No Photo
+                    </div>
+                  )}
+
+                  <input
+                    type="text"
+                    name={key}
+                    value={form[key]}
+                    onChange={handleChange}
+                    placeholder="URL or uploaded data"
+                    className="w-full p-1.5 bg-white border border-ivory-300 rounded text-[10px] truncate"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
