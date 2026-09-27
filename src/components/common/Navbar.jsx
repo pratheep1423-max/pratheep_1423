@@ -37,13 +37,11 @@ export const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${
-          isAdminAuthenticated ? 'top-10' : 'top-0'
-        } ${
-          scrolled
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 ${isAdminAuthenticated ? 'top-10' : 'top-0'
+          } ${scrolled
             ? 'py-3 glass-panel shadow-editorial border-b border-ivory-300/60 dark:border-obsidian-800'
             : 'py-5 bg-transparent'
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* Logo */}
@@ -51,14 +49,23 @@ export const Navbar = () => {
             onClick={() => handleNavClick('home')}
             onMouseEnter={() => { setCursorText('2M'); setCursorVariant('hover'); }}
             onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
-            className="group text-left focus:outline-none"
+            className="group text-left focus:outline-none relative"
           >
-            <span className={`font-serif text-2xl md:text-3xl font-bold tracking-wider transition-colors ${
-              isDarkHeader ? 'text-ivory-50 group-hover:text-champagne-400' : 'text-obsidian-900 group-hover:text-champagne-600'
-            }`}>
-              {brandName}
-            </span>
-            <span className={`block text-[9px] uppercase tracking-[0.35em] font-mono -mt-1 ${
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={isDarkHeader ? 'logo-dark' : 'logo-light'}
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className={`font-serif text-2xl md:text-3xl font-bold tracking-wider block ${
+                  isDarkHeader ? 'text-ivory-50 group-hover:text-champagne-400' : 'text-obsidian-900 group-hover:text-champagne-600'
+                }`}
+              >
+                {brandName}
+              </motion.span>
+            </AnimatePresence>
+            <span className={`block text-[9px] uppercase tracking-[0.35em] font-mono -mt-1 transition-colors duration-300 ${
               isDarkHeader ? 'text-ivory-200/60' : 'text-obsidian-800/60'
             }`}>
               Fine Art Photography
@@ -75,23 +82,21 @@ export const Navbar = () => {
                   onClick={() => handleNavClick(link.view)}
                   onMouseEnter={() => { setCursorText(''); setCursorVariant('hover'); }}
                   onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
-                  className={`relative text-xs uppercase tracking-[0.2em] font-medium transition-colors py-1 ${
-                    isActive
+                  className={`relative text-xs uppercase tracking-[0.2em] font-medium transition-colors py-1 ${isActive
                       ? isDarkHeader
                         ? 'text-champagne-400 font-bold'
                         : 'text-champagne-600 font-semibold'
                       : isDarkHeader
                         ? 'text-ivory-100/90 hover:text-white font-medium'
                         : 'text-obsidian-900/80 hover:text-obsidian-900'
-                  }`}
+                    }`}
                 >
                   {link.name}
                   {isActive && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className={`absolute bottom-0 left-0 right-0 h-[1.5px] ${
-                        isDarkHeader ? 'bg-champagne-400' : 'bg-champagne-500'
-                      }`}
+                      className={`absolute bottom-0 left-0 right-0 h-[1.5px] ${isDarkHeader ? 'bg-champagne-400' : 'bg-champagne-500'
+                        }`}
                     />
                   )}
                 </button>
@@ -100,43 +105,16 @@ export const Navbar = () => {
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              onMouseEnter={() => { setCursorText(theme === 'dark' ? 'LIGHT' : 'DARK'); setCursorVariant('hover'); }}
-              onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
-              className={`p-2 rounded-full border transition-all duration-300 backdrop-blur-md flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium ${
-                isDarkHeader
-                  ? 'border-obsidian-800 bg-obsidian-900/80 text-ivory-100 hover:border-champagne-500 hover:text-champagne-400'
-                  : 'border-ivory-300 bg-white/70 text-obsidian-900 hover:border-champagne-500 hover:text-champagne-600'
-              }`}
-              title={theme === 'dark' ? 'Switch to Bright Theme' : 'Switch to Dark Theme'}
-              aria-label="Toggle Theme Mode"
-            >
-              {theme === 'dark' ? (
-                <>
-                  <Sun className="w-4 h-4 text-champagne-400" />
-                  <span className="text-[10px] tracking-wider uppercase text-champagne-400 font-semibold">BRIGHT</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-4 h-4 text-obsidian-900" />
-                  <span className="text-[10px] tracking-wider uppercase text-obsidian-800 font-semibold">DARK</span>
-                </>
-              )}
-            </button>
-
+          <div className="hidden lg:flex items-center gap-4 ml-8">
             {/* Admin View Toggle */}
             <button
               onClick={() => handleNavClick('admin')}
-              className={`flex items-center gap-2 text-[11px] uppercase tracking-wider px-3 py-2 rounded border transition-colors ${
-                isAdminMode
+              className={`flex items-center gap-2 text-[11px] uppercase tracking-wider px-3 py-2 rounded border transition-colors ${isAdminMode
                   ? 'bg-obsidian-900 text-champagne-400 border-champagne-500'
                   : isDarkHeader
                     ? 'text-ivory-100 border-obsidian-700 hover:border-champagne-400 hover:text-white bg-obsidian-900/40'
                     : 'text-obsidian-800/70 border-ivory-300 hover:border-obsidian-900 hover:text-obsidian-900'
-              }`}
+                }`}
               title="Toggle Studio Admin System"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-champagne-400" />
@@ -155,33 +133,74 @@ export const Navbar = () => {
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
+
+            {/* Theme Toggle Button — rightmost */}
+            <motion.button
+              onClick={toggleTheme}
+              onMouseEnter={() => { setCursorText(theme === 'dark' ? 'LIGHT' : 'DARK'); setCursorVariant('hover'); }}
+              onMouseLeave={() => { setCursorText(''); setCursorVariant('default'); }}
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.93 }}
+              className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full border-2 text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
+                theme === 'dark'
+                  ? 'bg-champagne-500 border-champagne-400 text-obsidian-950 hover:bg-champagne-400 shadow-gold-glow'
+                  : 'bg-obsidian-900 border-obsidian-700 text-ivory-50 hover:bg-obsidian-800 hover:border-champagne-500'
+              }`}
+              title={theme === 'dark' ? 'Switch to Bright Mode' : 'Switch to Dark Mode'}
+              aria-label="Toggle Theme Mode"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === 'dark' ? (
+                  <motion.span
+                    key="sun"
+                    initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center gap-1.5"
+                  >
+                    <Sun className="w-3.5 h-3.5" />
+                    <span>BRIGHT</span>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="moon"
+                    initial={{ rotate: 90, opacity: 0, scale: 0.7 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: -90, opacity: 0, scale: 0.7 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center gap-1.5"
+                  >
+                    <Moon className="w-3.5 h-3.5" />
+                    <span>DARK</span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
 
           {/* Mobile Hamburger Toggle */}
           <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={toggleTheme}
-              className={`p-2 focus:outline-none transition-colors ${
-                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
-              }`}
+              className={`p-2 focus:outline-none transition-colors ${isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+                }`}
               title={theme === 'dark' ? 'Switch to Bright Theme' : 'Switch to Dark Theme'}
             >
               {theme === 'dark' ? <Sun className="w-5 h-5 text-champagne-400" /> : <Moon className="w-5 h-5 text-obsidian-900" />}
             </button>
             <button
               onClick={() => handleNavClick('admin')}
-              className={`p-2 transition-colors ${
-                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
-              }`}
+              className={`p-2 transition-colors ${isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+                }`}
               title="Admin Portal"
             >
               <ShieldCheck className="w-5 h-5 text-champagne-400" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 focus:outline-none transition-colors ${
-                isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
-              }`}
+              className={`p-2 focus:outline-none transition-colors ${isDarkHeader ? 'text-ivory-100 hover:text-champagne-400' : 'text-obsidian-900 hover:text-champagne-600'
+                }`}
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -208,9 +227,8 @@ export const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   onClick={() => handleNavClick(link.view)}
-                  className={`block w-full text-left font-serif text-3xl tracking-wide transition-colors ${
-                    currentView === link.view ? 'text-champagne-600 italic' : 'text-obsidian-900'
-                  }`}
+                  className={`block w-full text-left font-serif text-3xl tracking-wide transition-colors ${currentView === link.view ? 'text-champagne-600 italic' : 'text-obsidian-900'
+                    }`}
                 >
                   {link.name}
                 </motion.button>
